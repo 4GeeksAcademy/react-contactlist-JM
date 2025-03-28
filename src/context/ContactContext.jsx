@@ -8,14 +8,20 @@ const ContactProvider = ({children}) =>{
     //Importando desde la API de 4GeekAcademy
     const fetchContacts = async () =>{
         try {
-            const response = await fetch('https://playground.4geeks.com/contact/agendas/juanmago/contacts');
+            const response = await fetch('https://playground.4geeks.com/contact/agendas/mago/contacts');
             if(!response.ok){
                 throw new Error ('Error al obtener los datos');
             }
 
-            const data = await response.json();
+            if(response.status === 404){
+                await createUser()
+                return
+          }
+
+            const data = await response.json(); 
             setContacts(data.contacts)
             console.log(data.contacts)
+           
 
         }catch(error){
             console.error('Error fetching contacts:', error)
@@ -25,7 +31,7 @@ const ContactProvider = ({children}) =>{
     //Crear Usuario
     const CreateUsuario = async () => {
         try {
-            const response = await fetch('https://playground.4geeks.com/contact/agendas/juanmago/contacts', {
+            const response = await fetch('https://playground.4geeks.com/contact/agendas/mago/contacts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -43,7 +49,7 @@ const ContactProvider = ({children}) =>{
     //Crear nuevo contacto
     const addContact = async (newContact) => {
         try {
-            const response = await fetch('https://playground.4geeks.com/contact/agendas/juanmago/contacts', {
+            const response = await fetch('https://playground.4geeks.com/contact/agendas/mago/contacts', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -59,7 +65,7 @@ const ContactProvider = ({children}) =>{
     //Actualizar Contactos
     const updateContact = async (id, updatedContact) => {
         try {
-            const response = await fetch(`https://playground.4geeks.com/contact/agendas/juanmago/contacts/${id}`, {
+            const response = await fetch(`https://playground.4geeks.com/contact/agendas/mago/contacts/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -76,7 +82,7 @@ const ContactProvider = ({children}) =>{
       // Eliminar un contacto
       const deleteContact = async (id) => {
         try {
-            await fetch(`https://playground.4geeks.com/contact/agendas/juanmago/contacts/${id}`, {
+            await fetch(`https://playground.4geeks.com/contact/agendas/mago/contacts/${id}`, {
                 method: 'DELETE',
             });
             setContacts(contacts.filter(contact => contact.id !== id));
